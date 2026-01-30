@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2026-01-30T10:12:45-03:00</updated><id>/feed.xml</id><entry><title type="html">Hello World</title><link href="/2026/01/29/hello-world.html" rel="alternate" type="text/html" title="Hello World" /><published>2026-01-29T00:00:00-03:00</published><updated>2026-01-29T00:00:00-03:00</updated><id>/2026/01/29/hello-world</id><content type="html" xml:base="/2026/01/29/hello-world.html"><![CDATA[<h1 id="olá-mundo">Olá, mundo!</h1>
+<p>Primeiro post após configurar a publicação.</p>
+
+<h2 id="jekyll">Jekyll</h2>
+<p>No instalador do ruby pra Windows existe a opção de instalar um ambiente MSYS2, que eu já tinha,
+então desmarquei a opção.</p>
+
+<p>Tentando um <code class="language-plaintext highlighter-rouge">gem install jekyll bundler</code> recebi mensagens de sucesso e um aviso <code class="language-plaintext highlighter-rouge">MSYS2 could not be
+found. Please run 'ridk install'</code>. Hum, pensei que o git bash fosse um MSYS2.</p>
+
+<p>Mas sem problemas, prosseguimos com a instalação do MSYS2. Sempre tentei sobreviver apenas com o
+Git Bash no Windows, faz tempo que não olho para outras alternativas. Talvez seja um momento
+interessante para rever isso.</p>
+
+<p>O tal <code class="language-plaintext highlighter-rouge">ridk</code> não está no meu PATH, nem vou procurar, só executei novamente o ruby installer. À
+propósito, a versão do instalador que utilizei nessa situação foi o rubyinstaller-devkit-3.4.8-1.
+Finalmente chegando no final da instalação optei pelo <code class="language-plaintext highlighter-rouge">MSYS2 and MINGW development toolchain</code>.</p>
+
+<p>Tentando novamente o <code class="language-plaintext highlighter-rouge">gem install jekyll bundler</code>, recebo umas mensagens de <code class="language-plaintext highlighter-rouge">Building native
+extensions.</code> Acho que agora vai. E foi.</p>
+
+<h2 id="dumb-mirror-com-github-actions">“Dumb” Mirror com GitHub Actions</h2>
+
+<p>Eu queria fazer um tipo de mirror do meu repositório, mas não é um mirror, é só uma cópia das
+alterações commitadas em outro repositório.</p>
+
+<p>Inicialmente testei algumas actions de mirroring do Marketplace, mas não era exatamente o que eu
+queria ou achei o setup muito complicado. Como tudo queria fazer era só copiar as alterações e
+espelhar em outro repositório, um simples <code class="language-plaintext highlighter-rouge">cp -r</code> resolve. Isso é uma chave de Deploy registrada
+para o repositório mirror.</p>
+
+<p>Aí está o minha solução idiota:</p>
+<ul>
+  <li>Duas actions/checkout@v4, uma para o repo original e outra para o mirror. Ambas especificando o
+diretório de destino no parâmetro <code class="language-plaintext highlighter-rouge">path</code>.</li>
+  <li>No checkout do mirror, é especificada a secret contento a chave com acesso de escrita para o repo
+mirror. A privada é registrada nas secrets do presente repositório e a pública registrada no
+mirror.</li>
+  <li>As alterações copiadas para o mirror são incluídas em um commit e enviadas para o repositório.</li>
+</ul>
+
+<div class="language-yaml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="na">name</span><span class="pi">:</span> <span class="s">CI</span>
+<span class="na">on</span><span class="pi">:</span>
+  <span class="na">push</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">main"</span> <span class="pi">]</span>
+  <span class="na">pull_request</span><span class="pi">:</span>
+    <span class="na">branches</span><span class="pi">:</span> <span class="pi">[</span> <span class="s2">"</span><span class="s">main"</span> <span class="pi">]</span>
+  <span class="na">workflow_dispatch</span><span class="pi">:</span>
+<span class="na">jobs</span><span class="pi">:</span>
+  <span class="na">build</span><span class="pi">:</span>
+    <span class="na">runs-on</span><span class="pi">:</span> <span class="s">ubuntu-latest</span>
+    <span class="na">steps</span><span class="pi">:</span>
+      <span class="pi">-</span> <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">fetch-depth</span><span class="pi">:</span> <span class="m">0</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">private</span>
+      
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Mirror Checkout</span>
+        <span class="na">uses</span><span class="pi">:</span> <span class="s">actions/checkout@v4</span>
+        <span class="na">with</span><span class="pi">:</span>
+          <span class="na">ssh-key</span><span class="pi">:</span> <span class="s">$</span>
+          <span class="na">fetch-depth</span><span class="pi">:</span> <span class="m">0</span>
+          <span class="na">path</span><span class="pi">:</span> <span class="s">mirror</span>
+          <span class="na">repository</span><span class="pi">:</span> <span class="s">owner/mirror-repo</span>
+
+      <span class="pi">-</span> <span class="na">name</span><span class="pi">:</span> <span class="s">Run a multi-line script</span>
+        <span class="na">run</span><span class="pi">:</span> <span class="pi">|</span>
+          <span class="s">rm -rf private/.git</span>
+          <span class="s">rm -rf private/.github</span>
+          <span class="s">cp -r private/* mirror/</span>
+          <span class="s">ls private/ -lha</span>
+          <span class="s">ls mirror/ -lha</span>
+          <span class="s">cd mirror</span>
+          <span class="s">git config user.name github-actions</span>
+          <span class="s">git config user.email github-actions@github.com</span>
+          <span class="s">git add .</span>
+          <span class="s">git commit -m "update mirror repo"</span>
+          <span class="s">git push</span>
+</code></pre></div></div>
+
+<p>Esse malabarismo todo foi uma tentativa de anonimizar o autor das postagens em um repositório com
+GitHub Pages. A ideia era que o post original fosse escrito usando uma conta pessoal em um
+repositório privado e publicado pela action em um repositório público. Só que ainda é possível ver
+publicamente o nome da conta resposável pelos deploymennts do GitHub Pages.</p>
+
+<h2 id="netlify">Netlify</h2>
+
+<p>Procurando outra alternativa.</p>]]></content><author><name>epilef</name></author><summary type="html"><![CDATA[Olá, mundo! Primeiro post após configurar a publicação.]]></summary></entry></feed>
