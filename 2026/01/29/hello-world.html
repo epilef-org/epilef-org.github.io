@@ -14,11 +14,11 @@
 <meta name="description" content="Olá, mundo! Primeiro post após configurar a publicação." />
 <meta property="og:description" content="Olá, mundo! Primeiro post após configurar a publicação." />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-01-29T00:00:00-03:00" />
+<meta property="article:published_time" content="2026-01-29T00:00:00-06:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Hello World" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"epilef"},"dateModified":"2026-01-29T00:00:00-03:00","datePublished":"2026-01-29T00:00:00-03:00","description":"Olá, mundo! Primeiro post após configurar a publicação.","headline":"Hello World","mainEntityOfPage":{"@type":"WebPage","@id":"/2026/01/29/hello-world.html"},"url":"/2026/01/29/hello-world.html"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"epilef"},"dateModified":"2026-01-29T00:00:00-06:00","datePublished":"2026-01-29T00:00:00-06:00","description":"Olá, mundo! Primeiro post após configurar a publicação.","headline":"Hello World","mainEntityOfPage":{"@type":"WebPage","@id":"/2026/01/29/hello-world.html"},"url":"/2026/01/29/hello-world.html"}</script>
 <!-- End Jekyll SEO tag -->
 
   </head>
@@ -121,7 +121,47 @@ publicamente o nome da conta resposável pelos deploymennts do GitHub Pages.</p>
 
 <h2 id="netlify">Netlify</h2>
 
-<p>Procurando outra alternativa.</p>
+<p>Procurando outra alternativa cheguei no Netlify. Parece funcionar e é fácil de configurar, só
+preciso lembrar de fazer <code class="language-plaintext highlighter-rouge">jekyll build</code>. Ou melhor ainda, incluir uma action
+(actions/jekyll-build-pages@v1) pra fazer isso.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: private
+      - name: Mirror Checkout
+        uses: actions/checkout@v4
+        with:
+          ssh-key: $
+          fetch-depth: 0
+          path: mirror
+          repository: epilef-org/epilef-org.github.io
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./private
+          destination: ./mirror
+      - name: Run a multi-line script
+        run: |
+          ls mirror/ -lha
+          cd mirror
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "update mirror repo"
+          git push
+</code></pre></div></div>
 
   </body>
 </html>

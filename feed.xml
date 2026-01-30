@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2026-01-30T10:12:45-03:00</updated><id>/feed.xml</id><entry><title type="html">Hello World</title><link href="/2026/01/29/hello-world.html" rel="alternate" type="text/html" title="Hello World" /><published>2026-01-29T00:00:00-03:00</published><updated>2026-01-29T00:00:00-03:00</updated><id>/2026/01/29/hello-world</id><content type="html" xml:base="/2026/01/29/hello-world.html"><![CDATA[<h1 id="olá-mundo">Olá, mundo!</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="/feed.xml" rel="self" type="application/atom+xml" /><link href="/" rel="alternate" type="text/html" /><updated>2026-01-30T09:39:31-06:00</updated><id>/feed.xml</id><entry><title type="html">Hello World</title><link href="/2026/01/29/hello-world.html" rel="alternate" type="text/html" title="Hello World" /><published>2026-01-29T00:00:00-06:00</published><updated>2026-01-29T00:00:00-06:00</updated><id>/2026/01/29/hello-world</id><content type="html" xml:base="/2026/01/29/hello-world.html"><![CDATA[<h1 id="olá-mundo">Olá, mundo!</h1>
 <p>Primeiro post após configurar a publicação.</p>
 
 <h2 id="jekyll">Jekyll</h2>
@@ -85,4 +85,44 @@ publicamente o nome da conta resposável pelos deploymennts do GitHub Pages.</p>
 
 <h2 id="netlify">Netlify</h2>
 
-<p>Procurando outra alternativa.</p>]]></content><author><name>epilef</name></author><summary type="html"><![CDATA[Olá, mundo! Primeiro post após configurar a publicação.]]></summary></entry></feed>
+<p>Procurando outra alternativa cheguei no Netlify. Parece funcionar e é fácil de configurar, só
+preciso lembrar de fazer <code class="language-plaintext highlighter-rouge">jekyll build</code>. Ou melhor ainda, incluir uma action
+(actions/jekyll-build-pages@v1) pra fazer isso.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>name: CI
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          path: private
+      - name: Mirror Checkout
+        uses: actions/checkout@v4
+        with:
+          ssh-key: $
+          fetch-depth: 0
+          path: mirror
+          repository: epilef-org/epilef-org.github.io
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./private
+          destination: ./mirror
+      - name: Run a multi-line script
+        run: |
+          ls mirror/ -lha
+          cd mirror
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "update mirror repo"
+          git push
+</code></pre></div></div>]]></content><author><name>epilef</name></author><summary type="html"><![CDATA[Olá, mundo! Primeiro post após configurar a publicação.]]></summary></entry></feed>
