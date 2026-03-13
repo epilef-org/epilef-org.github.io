@@ -9,8 +9,10 @@
       
       
       
-        <link rel="prev" href="../../04/disco-gratis-gcp/">
+        <link rel="prev" href="../../09/openvino/">
       
+      
+        <link rel="next" href="../../../03/04/disco-gratis-gcp/">
       
       
         
@@ -21,7 +23,7 @@
     
     
       
-        <title>Blogging em 2026 - epilef.org</title>
+        <title>NGINX com nome de dominio e IP - epilef.org</title>
       
     
     
@@ -62,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#blogging-em-2026" class="md-skip">
+        <a href="#nginx-com-nome-de-dominio-e-ip" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Blogging em 2026
+              NGINX com nome de dominio e IP
             
           </span>
         </div>
@@ -286,6 +288,25 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#acmesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ACME.SH
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -321,7 +342,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-03-11 00:00:00+00:00" class="md-ellipsis">March 11, 2026</time>
+                        <time datetime="2026-02-20 00:00:00+00:00" class="md-ellipsis">February 20, 2026</time>
                       </div>
                     </li>
                     
@@ -333,7 +354,7 @@
                           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 20a8 8 0 0 0 8-8 8 8 0 0 0-8-8 8 8 0 0 0-8 8 8 8 0 0 0 8 8m0-18a10 10 0 0 1 10 10 10 10 0 0 1-10 10C6.47 22 2 17.5 2 12A10 10 0 0 1 12 2m.5 5v5.25l4.5 2.67-.75 1.23L11 13V7z"/></svg>
                           <span class="md-ellipsis">
                             
-                              1 min read
+                              2 min read
                             
                           </span>
                         </div>
@@ -357,16 +378,66 @@
 
 
 
-<h1 id="blogging-em-2026">Blogging em 2026</h1>
-<p>Apesar de estar aqui em 2026, escrever um blog era algo que queria voltar a fazer faz muito tempo.
-Não exatamente ou necessariamente um blog, essa é apenas a forma. O objetivo é simplesmente
-registrar minhas atividades e pensamentos de forma minimamente estruturada. Esse tipo de registro
-já passou por várias formas, já tentei blogspot, wordpress, joomla, documentos txt, <em>documentos de
-texto rico</em>, cadernos do MS OneNote, cartões em um quadro do Trelo, notas no iCloud, arquivos
-Markdown em um Dropbox, grupos com alguns bots utilitários no telegram...</p>
-<p>Não tenho grandes planos ou expectativas envolvendo essa página, mas quero pelo menos mantê-la on-line por alguns anos.
-Já fiz algo semelhante por volta de 2009-2011. Eu mantinha uma página on-line que tinha uma boa frequência de visitas, mesmo tratando de um nicho muito restrito.</p>
-<p>Aqui, não quero me ater a apenas um tema. Qualquer que seja a coisa que eu queira registrar, o farei sem muito critério. Mas é claro que alguns temas podem ser recorrentes, só não quero criar restrições para mim mesmo.</p>
+<h1 id="nginx-com-nome-de-dominio-e-ip">NGINX com nome de dominio e IP</h1>
+<p>Queria meu servidor escutando tanto o IP quanto o nome de domínio, mas servindo dois certificados
+diferentes. A solução é a duplicação da entrada <code>server</code> no arquivo de configuração do nginx, cada
+uma com sua propriedade <code>server_name</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># ---- Servidor para o domínio ----
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>server {
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    listen 443 ssl;
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    server_name example.com www.example.com;
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    ssl_certificate     /etc/nginx/ssl/domain.crt;
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    ssl_certificate_key /etc/nginx/ssl/domain.key;
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    root /var/www/app;
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    index index.html;
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    location / {
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        try_files $uri $uri/ /index.html;
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    }
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>}
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a># ---- Servidor para o IP ----
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>server {
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    listen 443 ssl;
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    server_name 123.123.123.123;
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    ssl_certificate     /etc/nginx/ssl/ip.crt;
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    ssl_certificate_key /etc/nginx/ssl/ip.key;
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>    root /var/www/app;
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    index index.html;
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>    location / {
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>        try_files $uri $uri/ /index.html;
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>    }
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>}
+</code></pre></div>
+<p>Essa configuração me mostrou adequadamente o certificado quando acessei usando o nome do domínio.<br />
+Mas acessando pelo IP não. Solução: adicionar na seção do IP o parâmetro <code>default_server</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>    server_name 203.0.113.10 default_server;
+</code></pre></div>
+<p>Ainda acho isso um pouco feio. Se o servidor é algo mais complicado que esse exemplo, termina-se
+duplicando a configuração.</p>
+<p>Pesquisando um pouco mais cheguei no <a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a>
+, que adiciona um interpretador de scripts lua no nginx. Esse módulo é um componente do OpenResty,
+que é mais um daqueles produtos baseados no nginx. Uma breve leitura do site oficial revela "mais um daqueles produtos baseados no nginx..."</p>
+<h2 id="acmesh">ACME.SH</h2>
+<p>A melhor solução pra certificados estilo "letsencrypt" que já encontrei é o ACME.sh.</p>
+<p>O utilitário é bem fácil de instalar, é toda construída em cima de scripts e curl, até onde lembro.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>https://get.acme.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span>-s<span class="w"> </span><span class="nv">email</span><span class="o">=</span>blabla@mail.com
+</code></pre></div></p>
+<p>É possível até emitir um certificado pra um endereço IP:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>acme.sh<span class="w"> </span>--issue<span class="w"> </span>-d<span class="w"> </span><span class="m">123</span>.123.123.123<span class="w"> </span>--standalone<span class="w"> </span>--httpport<span class="w"> </span><span class="m">80</span><span class="w"> </span>--server<span class="w"> </span>letsencrypt<span class="w"> </span>--certificate-profile<span class="w"> </span>shortlived<span class="w"> </span>--days<span class="w"> </span><span class="m">6</span>
+</code></pre></div></p>
+<p>Para a renovação dos certificados, adicionei um cronjob pra renovação e outro para dar reload no
+servidor.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>00 12 1,6,11,16,21,26 * * &quot;/root/.acme.sh&quot;/acme.sh --cron --home &quot;/root/.acme.sh&quot; --force &gt; /dev/null
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>10 12 1,6,11,16,21,26 * * nginx -s reload 
+</code></pre></div>
+<p>O <code>--force</code> força a renovação mesmo quando não está espirado e o padrão esotérico <code>1,6,11,16,21,26</code> é 
+para rodar nesses dias (1, 6, 11...). É estranho mas funciona em meses de 28/29/30/31 dias.</p>
 
 
 

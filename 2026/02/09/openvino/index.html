@@ -9,8 +9,10 @@
       
       
       
-        <link rel="prev" href="../../04/disco-gratis-gcp/">
+        <link rel="prev" href="../../06/gcc-no-windows/">
       
+      
+        <link rel="next" href="../../20/nginx-com-nome-de-dominio-e-ip/">
       
       
         
@@ -21,7 +23,7 @@
     
     
       
-        <title>Blogging em 2026 - epilef.org</title>
+        <title>OpenVINO - epilef.org</title>
       
     
     
@@ -62,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#blogging-em-2026" class="md-skip">
+        <a href="#openvino" class="md-skip">
           Skip to content
         </a>
       
@@ -98,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Blogging em 2026
+              OpenVINO
             
           </span>
         </div>
@@ -321,7 +323,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2026-03-11 00:00:00+00:00" class="md-ellipsis">March 11, 2026</time>
+                        <time datetime="2026-02-09 00:00:00+00:00" class="md-ellipsis">February 9, 2026</time>
                       </div>
                     </li>
                     
@@ -357,16 +359,36 @@
 
 
 
-<h1 id="blogging-em-2026">Blogging em 2026</h1>
-<p>Apesar de estar aqui em 2026, escrever um blog era algo que queria voltar a fazer faz muito tempo.
-Não exatamente ou necessariamente um blog, essa é apenas a forma. O objetivo é simplesmente
-registrar minhas atividades e pensamentos de forma minimamente estruturada. Esse tipo de registro
-já passou por várias formas, já tentei blogspot, wordpress, joomla, documentos txt, <em>documentos de
-texto rico</em>, cadernos do MS OneNote, cartões em um quadro do Trelo, notas no iCloud, arquivos
-Markdown em um Dropbox, grupos com alguns bots utilitários no telegram...</p>
-<p>Não tenho grandes planos ou expectativas envolvendo essa página, mas quero pelo menos mantê-la on-line por alguns anos.
-Já fiz algo semelhante por volta de 2009-2011. Eu mantinha uma página on-line que tinha uma boa frequência de visitas, mesmo tratando de um nicho muito restrito.</p>
-<p>Aqui, não quero me ater a apenas um tema. Qualquer que seja a coisa que eu queira registrar, o farei sem muito critério. Mas é claro que alguns temas podem ser recorrentes, só não quero criar restrições para mim mesmo.</p>
+<h1 id="openvino">OpenVINO</h1>
+<p>Hoje embarquei em uma aventura diferente, perguntei pro Chat-GPT como funciona essa coisa de arte
+generativa. Fui parar no tal stable-diffusion.</p>
+<p>https://docs.openvino.ai/2024/notebooks/stable-diffusion-text-to-image-with-output.html</p>
+<p>Segue o caminho:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>openvino
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">source</span><span class="w"> </span>openvino/Scripts/activate
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>pip<span class="w"> </span>install<span class="w"> </span>openvino<span class="w"> </span>openvino-dev
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>pip<span class="w"> </span>install<span class="w"> </span>diffusers<span class="w"> </span>transformers<span class="w"> </span>accelerate<span class="w"> </span>scipy<span class="w"> </span>safetensors
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>pip<span class="w"> </span>install<span class="w"> </span>optimum<span class="o">[</span>openvino<span class="o">]</span>
+</code></pre></div>
+<p>Depois mais um script python bem simples pra rodar a coisa toda passando um prompt e salvar o
+resultado.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">optimum.intel.openvino</span><span class="w"> </span><span class="kn">import</span> <span class="n">OVStableDiffusionPipeline</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;runwayml/stable-diffusion-v1-5&quot;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">pipe</span> <span class="o">=</span> <span class="n">OVStableDiffusionPipeline</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">model_id</span><span class="p">,</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">export</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="nb">compile</span><span class="o">=</span><span class="kc">True</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="p">)</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">image</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="s2">&quot;low poly fantasy sword, game asset, studio lighting&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;result.png&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Pra mim, que nunca mechi com isso tipo de coisa, o resultado foi impressionante.</p>
+<p><img alt="generated low poly fantasy sword, game asset, studio lighting" src="../../../../assets/2026-02/result0.png" /></p>
+<p>Fiquei com vontade de testar esse outro negócio aqui pra gerar modelos 3D: <a href="https://docs.openvino.ai/2024/notebooks/stable-fast-3d-with-output.html">https://docs.openvino.ai/2024/notebooks/stable-fast-3d-with-output.html</a>. Mas vai ficar pra outro dia.</p>
 
 
 

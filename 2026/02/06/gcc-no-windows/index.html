@@ -9,8 +9,10 @@
       
       
       
+        <link rel="prev" href="../../../01/29/ol%C3%A1-mundo/">
       
-        <link rel="next" href="../../../../2026/01/29/ol%C3%A1-mundo/">
+      
+        <link rel="next" href="../../09/openvino/">
       
       
         
@@ -21,7 +23,7 @@
     
     
       
-        <title>Another Page - Site</title>
+        <title>GCC no Windows - epilef.org</title>
       
     
     
@@ -62,7 +64,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#another-page" class="md-skip">
+        <a href="#gcc-no-windows" class="md-skip">
           Skip to content
         </a>
       
@@ -78,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../../../.." title="Site" class="md-header__button md-logo" aria-label="Site" data-md-component="logo">
+    <a href="../../../.." title="epilef.org" class="md-header__button md-logo" aria-label="epilef.org" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -92,13 +94,13 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Site
+            epilef.org
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Another Page
+              GCC no Windows
             
           </span>
         </div>
@@ -138,13 +140,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../../.." title="Site" class="md-nav__button md-logo" aria-label="Site" data-md-component="logo">
+    <a href="../../../.." title="epilef.org" class="md-nav__button md-logo" aria-label="epilef.org" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
 
     </a>
-    Site
+    epilef.org
   </label>
   
   <ul class="md-nav__list" data-md-scrollfix>
@@ -167,7 +169,7 @@
   <span class="md-ellipsis">
     
   
-    Bloggg
+    Blog
   
 
     
@@ -257,36 +259,6 @@
 
               
             
-              
-                
-  
-  
-  
-    
-  
-  
-    <li class="md-nav__item">
-      <a href="../../../../archive/2025/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    2025
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
           </ul>
         </nav>
       
@@ -351,7 +323,7 @@
                     <li class="md-nav__item">
                       <div class="md-nav__link">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 19H5V8h14m-3-7v2H8V1H6v2H5c-1.11 0-2 .89-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1m-1 11h-5v5h5z"/></svg>
-                        <time datetime="2025-08-29 00:00:00+00:00" class="md-ellipsis">August 29, 2025</time>
+                        <time datetime="2026-02-06 00:00:00+00:00" class="md-ellipsis">February 6, 2026</time>
                       </div>
                     </li>
                     
@@ -387,8 +359,32 @@
 
 
 
-<h1 id="another-page">Another Page</h1>
-<p>another page</p>
+<h1 id="gcc-no-windows">GCC no Windows</h1>
+<p>Só muito recentemente "me toquei" que existem várias "distribuições" do GCC para Windows.</p>
+<ul>
+<li>TDM-GCC</li>
+</ul>
+<p>Já usei TDM-GCC com sucesso por algum tempo, mas está sempre bem desatualizada. Agora mesmo já tem
+alguns anos que não recebe atualizações.</p>
+<ul>
+<li>MSYS2</li>
+</ul>
+<p>Outra alternativa é MSYS2, mas os mirrors são um pouco obscuros, especialmente considerando que
+trabalho atrás de um firewall mais rígido.</p>
+<ul>
+<li>WinLibs.com</li>
+</ul>
+<p>Uma solução que testei recentemente foi o WinLibs.com. Só um zip com tudo dentro, um conjunto
+razoável de ferramentas. Vários runtimes estão disponíveis (MSVCRT, UCRT). Quero testar ainda para
+ver se algum funciona com Windows XP.</p>
+<ul>
+<li>nuwen.net</li>
+</ul>
+<p>Essa distribuição vem com um conjunto maior de ferramentas. É atualizada com certa frequência por
+seu fiél mantenedor. O conjunto é bem sedutor. Não há informação explícita sobre o runtime que é usado.
+Verificando de perto, o sistema é construído em cima de um MSYS2. Todos os scripts para a
+construção do conjunto estão disponíveis em: https://github.com/StephanTLavavej/mingw-distro</p>
+<p>https://nuwen.net/mingw.html</p>
 
 
 
