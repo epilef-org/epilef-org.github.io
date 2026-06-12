@@ -382,6 +382,8 @@
 <p>Queria meu servidor escutando tanto o IP quanto o nome de domínio, mas servindo dois certificados
 diferentes. A solução é a duplicação da entrada <code>server</code> no arquivo de configuração do nginx, cada
 uma com sua propriedade <code>server_name</code>.</p>
+<!-- more -->
+
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a># ---- Servidor para o domínio ----
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>server {
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    listen 443 ssl;

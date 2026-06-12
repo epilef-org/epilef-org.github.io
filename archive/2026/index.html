@@ -336,9 +336,13 @@ registrar minhas atividades e pensamentos de forma minimamente estruturada. Esse
 já passou por várias formas, já tentei blogspot, wordpress, joomla, documentos txt, <em>documentos de
 texto rico</em>, cadernos do MS OneNote, cartões em um quadro do Trelo, notas no iCloud, arquivos
 Markdown em um Dropbox, grupos com alguns bots utilitários no telegram...</p>
-<p>Não tenho grandes planos ou expectativas envolvendo essa página, mas quero pelo menos mantê-la on-line por alguns anos.
-Já fiz algo semelhante por volta de 2009-2011. Eu mantinha uma página on-line que tinha uma boa frequência de visitas, mesmo tratando de um nicho muito restrito.</p>
-<p>Aqui, não quero me ater a apenas um tema. Qualquer que seja a coisa que eu queira registrar, o farei sem muito critério. Mas é claro que alguns temas podem ser recorrentes, só não quero criar restrições para mim mesmo.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/03/11/blogging-em-2026/">
+          Continue reading
+        </a>
+      </nav>
     
     
   </div>
@@ -368,52 +372,13 @@ Já fiz algo semelhante por volta de 2009-2011. Eu mantinha uma página on-line 
   <div class="md-post__content md-typeset">
     <h2 id="joplin"><a class="toclink" href="../../2026/03/06/joplin/">Joplin</a></h2>
 <p>Queria um serviço pra criar notas e sincronizá-las entre meus dispositivos. As notas do iCloud resolveriam isso, mas tanto meu computador do trabalho como o desktop de casa são Windows. Já vinha escrevendo Markdown faz um tempo, escrevendo no meu editor de código normal e enviando as alterações para um repositório Git. O problema dessa abordagem é que às vezes quero escrever no smartphone, e a única opção que vi foi usar o editor de Markdown do GitHub no browser. Às vezes estou no metrô lendo alguma coisa e quero salvar um link ou uma nota sobre o assunto pra olhar mais tarde. Daí a necessidade de usar múltiplos dispositivos.</p>
-<p>Procurando um pouco cheguei no Joplin. Aplicativo para várias plataformas e posso criar o meu próprio servidor para promover a sincronia entre os dispositivos. Acho que nem levou uma hora e está tudo configurado. Um docker compose com postgres e o servidor, mais uma regra no nginx e está tudo funcionando corretamente.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3&#39;</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">services</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">postgres</span><span class="p">:</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:16</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">        </span><span class="nt">volumes</span><span class="p">:</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./data/postgres:/var/lib/postgresql/data</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_PASSWORD=${POSTGRES_PASSWORD}</span>
-<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_USER=${POSTGRES_USER}</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_DB=${POSTGRES_DATABASE}</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="nt">networks</span><span class="p">:</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">joplin_network</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nt">joplinsync</span><span class="p">:</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">joplin/server:latest</span>
-<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">        </span><span class="nt">depends_on</span><span class="p">:</span>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">        </span><span class="nt">ports</span><span class="p">:</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;127.0.0.1:22300:22300&quot;</span>
-<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">        </span><span class="nt">restart</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">unless-stopped</span>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="nt">environment</span><span class="p">:</span>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APP_PORT=${APP_PORT}</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">APP_BASE_URL=${APP_BASE_URL}</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_CLIENT=${DB_CLIENT}</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_PASSWORD=${POSTGRES_PASSWORD}</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_DATABASE=${POSTGRES_DATABASE}</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_USER=${POSTGRES_USER}</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_PORT=5432</span>
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">POSTGRES_HOST=postgres</span>
-<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="nt">networks</span><span class="p">:</span>
-<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">joplin_network</span>
-<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>
-<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="nt">networks</span><span class="p">:</span>
-<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">    </span><span class="nt">joplin_network</span><span class="p">:</span>
-</code></pre></div>
-<p>Login com <code>admin@localhost</code> e pronto. Adicionei regra do nginx, adicionei um novo usuário. Testei a aplicação portátil pra Windows, sucesso na sincronização. Testei no iOS e sucesso também. Tenho uma nova ferramenta pra escrever minhas coisas.</p>
-<p>Estou ainda me acostumando com o aplicativo e algumas coisas já me fazem gostar:</p>
-<ul>
-<li>Corretor ortográfico</li>
-<li>Organização com tags</li>
-<li>Metadados como data/hora de criação e modificação.</li>
-<li>Janela com apenas o editor</li>
-</ul>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/03/06/joplin/">
+          Continue reading
+        </a>
+      </nav>
     
     
   </div>
@@ -446,13 +411,13 @@ Já fiz algo semelhante por volta de 2009-2011. Eu mantinha uma página on-line 
 gratuitos, então o que eu esperava é que continuasse assim após a recriação.
 Recriei usando a interface, com um sistema operacional mais recente, logo não era exatamente a
 mesma configuração que usei anteriormente.</p>
-<p>Imediatamente o faturamento subiu. Esperei mais uns dias com a esperança que a diferença magicamente 
-desaparecesse, mas é claro que não foi assim.</p>
-<p>Observando por alto a fatura, nada pareceu diferente. O problema só se revelou olhando a tabela de 
-custos. Comparando o mês anterior ficou evidente a diferença: O disco. O disco do nível gratuito é 
-o <strong>"Standard persistent disk"</strong>, e a escolha padrão é o <strong>balanced</strong>. Constatado o problema, vamos 
-corrigir. Por sorte, a configuração da máquina não é complexa e ainda é recente em minha memória.</p>
-<p>Deu certo, instância de vm 0800 funcionando.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/03/04/disco-gratis-gcp/">
+          Continue reading
+        </a>
+      </nav>
     
     
   </div>
@@ -484,62 +449,13 @@ corrigir. Por sorte, a configuração da máquina não é complexa e ainda é re
 <p>Queria meu servidor escutando tanto o IP quanto o nome de domínio, mas servindo dois certificados
 diferentes. A solução é a duplicação da entrada <code>server</code> no arquivo de configuração do nginx, cada
 uma com sua propriedade <code>server_name</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a># ---- Servidor para o domínio ----
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>server {
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    listen 443 ssl;
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    server_name example.com www.example.com;
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    ssl_certificate     /etc/nginx/ssl/domain.crt;
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    ssl_certificate_key /etc/nginx/ssl/domain.key;
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>    root /var/www/app;
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>    index index.html;
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    location / {
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        try_files $uri $uri/ /index.html;
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>    }
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>}
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a># ---- Servidor para o IP ----
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>server {
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>    listen 443 ssl;
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>    server_name 123.123.123.123;
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>    ssl_certificate     /etc/nginx/ssl/ip.crt;
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>    ssl_certificate_key /etc/nginx/ssl/ip.key;
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>    root /var/www/app;
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>    index index.html;
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>    location / {
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>        try_files $uri $uri/ /index.html;
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>    }
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>}
-</code></pre></div>
-<p>Essa configuração me mostrou adequadamente o certificado quando acessei usando o nome do domínio.<br />
-Mas acessando pelo IP não. Solução: adicionar na seção do IP o parâmetro <code>default_server</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>    server_name 203.0.113.10 default_server;
-</code></pre></div>
-<p>Ainda acho isso um pouco feio. Se o servidor é algo mais complicado que esse exemplo, termina-se
-duplicando a configuração.</p>
-<p>Pesquisando um pouco mais cheguei no <a href="https://github.com/openresty/lua-nginx-module">lua-nginx-module</a>
-, que adiciona um interpretador de scripts lua no nginx. Esse módulo é um componente do OpenResty,
-que é mais um daqueles produtos baseados no nginx. Uma breve leitura do site oficial revela "mais um daqueles produtos baseados no nginx..."</p>
-<h3 id="acmesh"><a class="toclink" href="../../2026/02/20/nginx-com-nome-de-dominio-e-ip/#acmesh">ACME.SH</a></h3>
-<p>A melhor solução pra certificados estilo "letsencrypt" que já encontrei é o ACME.sh.</p>
-<p>O utilitário é bem fácil de instalar, é toda construída em cima de scripts e curl, até onde lembro.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>curl<span class="w"> </span>https://get.acme.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span>-s<span class="w"> </span><span class="nv">email</span><span class="o">=</span>blabla@mail.com
-</code></pre></div></p>
-<p>É possível até emitir um certificado pra um endereço IP:
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>acme.sh<span class="w"> </span>--issue<span class="w"> </span>-d<span class="w"> </span><span class="m">123</span>.123.123.123<span class="w"> </span>--standalone<span class="w"> </span>--httpport<span class="w"> </span><span class="m">80</span><span class="w"> </span>--server<span class="w"> </span>letsencrypt<span class="w"> </span>--certificate-profile<span class="w"> </span>shortlived<span class="w"> </span>--days<span class="w"> </span><span class="m">6</span>
-</code></pre></div></p>
-<p>Para a renovação dos certificados, adicionei um cronjob pra renovação e outro para dar reload no
-servidor.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>00 12 1,6,11,16,21,26 * * &quot;/root/.acme.sh&quot;/acme.sh --cron --home &quot;/root/.acme.sh&quot; --force &gt; /dev/null
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>10 12 1,6,11,16,21,26 * * /usr/sbin/nginx -s reload 
-</code></pre></div>
-<p>O <code>--force</code> força a renovação mesmo quando não está espirado e o padrão esotérico <code>1,6,11,16,21,26</code> é 
-para rodar nesses dias (1, 6, 11...). É estranho mas funciona em meses de 28/29/30/31 dias.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/02/20/nginx-com-nome-de-dominio-e-ip/">
+          Continue reading
+        </a>
+      </nav>
     
     
   </div>
@@ -570,33 +486,13 @@ para rodar nesses dias (1, 6, 11...). É estranho mas funciona em meses de 28/29
     <h2 id="openvino"><a class="toclink" href="../../2026/02/09/openvino/">OpenVINO</a></h2>
 <p>Hoje embarquei em uma aventura diferente, perguntei pro Chat-GPT como funciona essa coisa de arte
 generativa. Fui parar no tal stable-diffusion.</p>
-<p>https://docs.openvino.ai/2024/notebooks/stable-diffusion-text-to-image-with-output.html</p>
-<p>Segue o caminho:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>openvino
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">source</span><span class="w"> </span>openvino/Scripts/activate
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>pip<span class="w"> </span>install<span class="w"> </span>openvino<span class="w"> </span>openvino-dev
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>pip<span class="w"> </span>install<span class="w"> </span>diffusers<span class="w"> </span>transformers<span class="w"> </span>accelerate<span class="w"> </span>scipy<span class="w"> </span>safetensors
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>pip<span class="w"> </span>install<span class="w"> </span>optimum<span class="o">[</span>openvino<span class="o">]</span>
-</code></pre></div>
-<p>Depois mais um script python bem simples pra rodar a coisa toda passando um prompt e salvar o
-resultado.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">optimum.intel.openvino</span><span class="w"> </span><span class="kn">import</span> <span class="n">OVStableDiffusionPipeline</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">model_id</span> <span class="o">=</span> <span class="s2">&quot;runwayml/stable-diffusion-v1-5&quot;</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">pipe</span> <span class="o">=</span> <span class="n">OVStableDiffusionPipeline</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>    <span class="n">model_id</span><span class="p">,</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>    <span class="n">export</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>    <span class="nb">compile</span><span class="o">=</span><span class="kc">True</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">)</span>
-<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="n">image</span> <span class="o">=</span> <span class="n">pipe</span><span class="p">(</span><span class="s2">&quot;low poly fantasy sword, game asset, studio lighting&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="n">image</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;result.png&quot;</span><span class="p">)</span>
-</code></pre></div>
-<p>Pra mim, que nunca mechi com isso tipo de coisa, o resultado foi impressionante.</p>
-<p><img alt="generated low poly fantasy sword, game asset, studio lighting" src="../../assets/2026-02/result0.png" /></p>
-<p>Fiquei com vontade de testar esse outro negócio aqui pra gerar modelos 3D: <a href="https://docs.openvino.ai/2024/notebooks/stable-fast-3d-with-output.html">https://docs.openvino.ai/2024/notebooks/stable-fast-3d-with-output.html</a>. Mas vai ficar pra outro dia.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/02/09/openvino/">
+          Continue reading
+        </a>
+      </nav>
     
     
   </div>
@@ -626,30 +522,13 @@ resultado.</p>
   <div class="md-post__content md-typeset">
     <h2 id="gcc-no-windows"><a class="toclink" href="../../2026/02/06/gcc-no-windows/">GCC no Windows</a></h2>
 <p>Só muito recentemente "me toquei" que existem várias "distribuições" do GCC para Windows.</p>
-<ul>
-<li>TDM-GCC</li>
-</ul>
-<p>Já usei TDM-GCC com sucesso por algum tempo, mas está sempre bem desatualizada. Agora mesmo já tem
-alguns anos que não recebe atualizações.</p>
-<ul>
-<li>MSYS2</li>
-</ul>
-<p>Outra alternativa é MSYS2, mas os mirrors são um pouco obscuros, especialmente considerando que
-trabalho atrás de um firewall mais rígido.</p>
-<ul>
-<li>WinLibs.com</li>
-</ul>
-<p>Uma solução que testei recentemente foi o WinLibs.com. Só um zip com tudo dentro, um conjunto
-razoável de ferramentas. Vários runtimes estão disponíveis (MSVCRT, UCRT). Quero testar ainda para
-ver se algum funciona com Windows XP.</p>
-<ul>
-<li>nuwen.net</li>
-</ul>
-<p>Essa distribuição vem com um conjunto maior de ferramentas. É atualizada com certa frequência por
-seu fiél mantenedor. O conjunto é bem sedutor. Não há informação explícita sobre o runtime que é usado.
-Verificando de perto, o sistema é construído em cima de um MSYS2. Todos os scripts para a
-construção do conjunto estão disponíveis em: https://github.com/StephanTLavavej/mingw-distro</p>
-<p>https://nuwen.net/mingw.html</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/02/06/gcc-no-windows/">
+          Continue reading
+        </a>
+      </nav>
     
     
   </div>
@@ -680,161 +559,13 @@ construção do conjunto estão disponíveis em: https://github.com/StephanTLava
     <h2 id="ola-mundo"><a class="toclink" href="../../2026/01/29/ol%C3%A1-mundo/">Olá, mundo!</a></h2>
 <p>Primeiro post após configurar a publicação.</p>
 <p>TL;DR: dei várias voltas configurando Jekyll e GitHub Actions para, no final, trocar tudo por MKDocs.</p>
-<h3 id="hello-jekyll-world"><a class="toclink" href="../../2026/01/29/ol%C3%A1-mundo/#hello-jekyll-world">Hello, Jekyll World!</a></h3>
-<p>No instalador do Ruby para Windows existe a opção de instalar um ambiente MSYS2. Como eu já tinha
-algo parecido por causa do Git Bash, desmarquei essa opção.</p>
-<p>Ao rodar <code>gem install jekyll bundler</code>, recebi mensagens de sucesso, mas também um aviso:</p>
-<p><code>MSYS2 could not be found. Please run 'ridk install'</code>.</p>
-<p>Inicialmente achei estranho — sempre considerei o Git Bash como “um tipo de MSYS2”.</p>
-<p>Sem pensar muito, resolvi seguir a recomendação e instalar o MSYS2. Sempre tentei sobreviver apenas
-com o Git Bash no Windows, então talvez seja um bom momento para rever essa decisão.</p>
-<p>O utilitário <code>ridk</code> não estava no meu PATH, então nem perdi tempo procurando. Apenas executei
-novamente o instalador do Ruby. A versão usada foi <code>rubyinstaller-devkit-3.4.8-1</code>.</p>
-<p>Ao final da instalação selecionei a opção:</p>
-<p><code>MSYS2 and MINGW development toolchain</code>.</p>
-<p>Rodando novamente <code>gem install jekyll bundler</code>, começaram a aparecer mensagens de
-<code>Building native extensions.</code></p>
-<p>Dessa vez parecia promissor. E funcionou.</p>
-<h3 id="dumb-mirror-com-github-actions"><a class="toclink" href="../../2026/01/29/ol%C3%A1-mundo/#dumb-mirror-com-github-actions">"Dumb" Mirror com GitHub Actions</a></h3>
-<p>Eu queria manter uma espécie de <em>mirror</em> do meu repositório — mas não exatamente um mirror.
-A ideia era simplesmente copiar as alterações commitadas para outro repositório.</p>
-<p>Testei algumas actions de mirroring disponíveis no Marketplace, mas nenhuma fazia exatamente o que
-eu queria ou exigia uma configuração maior do que parecia necessário.</p>
-<p>Como o objetivo era apenas copiar arquivos de um repositório para outro, um simples <code>cp -r</code> resolve.</p>
-<p>O acesso de escrita ao repositório de destino é feito usando uma <em>deploy key</em>.</p>
-<p>Minha solução ficou assim:</p>
-<ul>
-<li>Dois <code>actions/checkout@v4</code></li>
-<li>Um para o repositório original</li>
-<li>Outro para o repositório mirror</li>
-<li>Cada checkout usa o parâmetro <code>path</code> para definir o diretório local</li>
-</ul>
-<p>No checkout do mirror:</p>
-<ul>
-<li>é usada uma <code>secret</code> contendo a chave privada com acesso de escrita</li>
-<li>a chave pública correspondente é registrada no repositório mirror</li>
-</ul>
-<p>Depois disso:</p>
-<ul>
-<li>os arquivos são copiados</li>
-<li>um commit é criado</li>
-<li>e as alterações são enviadas para o repositório mirror</li>
-</ul>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">on</span><span class="p">:</span>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
-<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">jobs</span><span class="p">:</span>
-<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nt">build</span><span class="p">:</span>
-<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
-<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
-<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">private</span>
-<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
-<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mirror Checkout</span>
-<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">          </span><span class="nt">ssh-key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.NOREPLY_PUSH_KEY }}</span>
-<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror</span>
-<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">          </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">owner/mirror-repo</span>
-<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>
-<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run a multi-line script</span>
-<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">          </span><span class="no">rm -rf private/.git</span>
-<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="w">          </span><span class="no">rm -rf private/.github</span>
-<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="w">          </span><span class="no">cp -r private/* mirror/</span>
-<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">          </span><span class="no">ls private/ -lha</span>
-<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">          </span><span class="no">ls mirror/ -lha</span>
-<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">          </span><span class="no">cd mirror</span>
-<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">          </span><span class="no">git config user.name github-actions</span>
-<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">          </span><span class="no">git config user.email github-actions@github.com</span>
-<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">          </span><span class="no">git add .</span>
-<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">          </span><span class="no">git commit -m &quot;update mirror repo&quot;</span>
-<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">          </span><span class="no">git push</span>
-</code></pre></div>
-<p>Esse malabarismo todo foi uma tentativa de anonimizar o autor das postagens em um repositório com
-GitHub Pages.</p>
-<p>A ideia era:</p>
-<p>escrever o post em um repositório <strong>privado</strong>, usando uma conta pessoal</p>
-<p>publicar automaticamente em um repositório <strong>público</strong> usado pelo GitHub Pages</p>
-<p>Mas ainda assim é possível ver publicamente qual conta foi responsável pelos deployments do
-GitHub Pages.</p>
-<h3 id="netlify"><a class="toclink" href="../../2026/01/29/ol%C3%A1-mundo/#netlify">Netlify</a></h3>
-<p>Procurando outra alternativa para hospedar as páginas, acabei chegando ao Netlify.</p>
-<p>A configuração é simples e funciona bem. A única coisa necessária é rodar jekyll build.</p>
-<p>Ou melhor: deixar uma action fazer isso automaticamente, usando
-actions/jekyll-build-pages@v1.</p>
-<p>Assim, no repositório público fica apenas o site estático. (Mas se é pra deixar o html no repositório, por que não usar logo o GitHub Pages?)</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">on</span><span class="p">:</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">workflow_dispatch</span><span class="p">:</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nt">jobs</span><span class="p">:</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="nt">build</span><span class="p">:</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
-<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
-<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">private</span>
-<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Mirror Checkout</span>
-<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
-<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">          </span><span class="nt">ssh-key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.NOREPLY_PUSH_KEY }}</span>
-<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="w">          </span><span class="nt">fetch-depth</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
-<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">          </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror</span>
-<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">          </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">owner/mirror-repo</span>
-<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build with Jekyll</span>
-<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/jekyll-build-pages@v1</span>
-<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
-<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">          </span><span class="nt">source</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./private</span>
-<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">          </span><span class="nt">destination</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./mirror</span>
-<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run a multi-line script</span>
-<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
-<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">          </span><span class="no">ls mirror/ -lha</span>
-<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">          </span><span class="no">cd mirror</span>
-<a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="w">          </span><span class="no">git config user.name github-actions</span>
-<a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">          </span><span class="no">git config user.email github-actions@github.com</span>
-<a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">          </span><span class="no">git add .</span>
-<a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">          </span><span class="no">git commit -m &quot;update mirror repo&quot;</span>
-<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="w">          </span><span class="no">git push</span>
-</code></pre></div>
-<h3 id="mkdocs"><a class="toclink" href="../../2026/01/29/ol%C3%A1-mundo/#mkdocs">MKDocs</a></h3>
-<p>Alguns dias depois resolvi testar outra ferramenta para gerar páginas estáticas: <strong>MKDocs</strong>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>pip install mkdocs
-<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>mkdocs new pages
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>cd pages
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>mkdocs serve
-</code></pre></div>
-<p>Ok, já estou vendo uma página no browser e posso escrever Markdown. Acho que é tudo.</p>
-<p>Editei um <code>.md</code> e a página recarregou automaticamente.</p>
-<p>Excelente.</p>
-<p>Testando um tema:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pip install mkdocs-windmill
-</code></pre></div>
-<p>E no arquivo de configuração:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nn">...</span>
-<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">theme</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">windmill</span>
-</code></pre></div>
-<p>Funcionou sem problemas.</p>
-<p>Testei também:</p>
-<ul>
-<li>snippets de código</li>
-<li>syntax highlighting</li>
-<li>"hot reload"</li>
-</ul>
-<p>Tudo funcionando.</p>
-<p>Depois experimentei o tema Material, que inclusive tem plugin de blog.</p>
-<p>E aqui estamos. Ótimo.</p>
+
+    
+      <nav class="md-post__action">
+        <a href="../../2026/01/29/ol%C3%A1-mundo/">
+          Continue reading
+        </a>
+      </nav>
     
     
   </div>
