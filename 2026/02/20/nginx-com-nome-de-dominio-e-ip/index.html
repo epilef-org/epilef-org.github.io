@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.5">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
@@ -434,7 +434,7 @@ que é mais um daqueles produtos baseados no nginx. Uma breve leitura do site of
 <p>Para a renovação dos certificados, adicionei um cronjob pra renovação e outro para dar reload no
 servidor.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>00 12 1,6,11,16,21,26 * * &quot;/root/.acme.sh&quot;/acme.sh --cron --home &quot;/root/.acme.sh&quot; --force &gt; /dev/null
-<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>10 12 1,6,11,16,21,26 * * nginx -s reload 
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>10 12 1,6,11,16,21,26 * * /usr/sbin/nginx -s reload 
 </code></pre></div>
 <p>O <code>--force</code> força a renovação mesmo quando não está espirado e o padrão esotérico <code>1,6,11,16,21,26</code> é 
 para rodar nesses dias (1, 6, 11...). É estranho mas funciona em meses de 28/29/30/31 dias.</p>
